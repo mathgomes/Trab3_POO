@@ -1,2 +1,1 @@
-nomeAluno, tipoAluno, numLivrosAlugados, nomeLivro, tipoLivro, dataLivro(em ms desde 1970)
-a,professor,1,c,texto,1432258020003
+nomeAluno, tipoAluno, numLivrosAlugados, nomeLivro, tipoLivro, dataEmprestimo(em s desde 1970)

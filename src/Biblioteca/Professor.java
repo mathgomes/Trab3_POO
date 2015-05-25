@@ -3,6 +3,9 @@ package Biblioteca;
 
 import java.util.ArrayList;
 
+/**
+ * Classe professor representa um usuario do tipo professor
+ */
 public class Professor extends User{
 
     public Professor(String name, String type) {

@@ -3,6 +3,9 @@ package Biblioteca;
 
 import java.util.ArrayList;
 
+/**
+ * Classe comunidade representa um usuario da comunidade
+ */
 public class Comunidade extends User{
 
     public Comunidade(String name, String type) {
