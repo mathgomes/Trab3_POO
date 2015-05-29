@@ -1,0 +1,4 @@
+QtdUsuarios,QtdLivros
+0,0
+IDaluno,nomeAluno, tipoAluno, numLivrosAlugados, IDlivro, nomeLivro, tipoLivro, dataEmprestimo(em s desde 1970)
+IDlivro,nomeLivro, tipoLivro
