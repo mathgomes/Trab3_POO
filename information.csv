@@ -1,1 +1,10 @@
-nomeAluno, tipoAluno, numLivrosAlugados, nomeLivro, tipoLivro, dataEmprestimo(em s desde 1970)
+QtdUsuarios,QtdLivros
+3,3
+IDaluno,nomeAluno, tipoAluno, numLivrosAlugados, IDlivro, nomeLivro, tipoLivro, dataEmprestimo(em s desde 1970)
+0,a,aluno,1,0,b,texto,1432918591
+1,fsfsdfsdfds,professor,1,2,sdasdfqads,texto,1432919141
+2,ssssss,comunidade,0
+IDlivro,nomeLivro, tipoLivro
+0,b,texto
+2,sdasdfqads,texto
+1,bbbb,geral

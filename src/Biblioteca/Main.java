@@ -6,6 +6,8 @@ import static javafx.application.Application.launch;
  * Classe Main que inicializa a biblioteca
  */
 public class Main {
+
+
     public static void main(String []args) {
 
         Library library = new Library();

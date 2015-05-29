@@ -5,19 +5,27 @@ package Biblioteca;
  */
 public class Book {
 
+    private int ID;
     // Nome do livro
-    public String name;
+    private String name;
     // Tipo do livro
-    public String type;
+    private String type;
     // Data ( em segundos desde 1970) que foi pego emprestado
     protected long borrowedDate;
     // Checa se ja esta pego ou nao
     protected boolean isTaken;
 
-    public Book(String name, String type) {
+    public Book(String name, String type,int ID) {
         this.name = name;
         this.type = type;
         this.isTaken = false;
+        this.ID = ID;
+    }
+    public int getID() {
+        return this.ID;
+    }
+    public void setID(int ID) {
+        this.ID = ID;
     }
     // Get para o nome e o tipo
     public String getName() {

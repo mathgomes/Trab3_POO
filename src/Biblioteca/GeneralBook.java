@@ -6,7 +6,7 @@ package Biblioteca;
  * */
 public class GeneralBook extends Book {
     
-    public GeneralBook(String name, String type) {
-        super(name,type);
+    public GeneralBook(String name, String type, int ID) {
+        super(name,type,ID);
     }
 }

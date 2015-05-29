@@ -7,6 +7,8 @@ import java.util.ArrayList;
  */
 public abstract class User {
 
+    // ID do usuario
+    private int ID;
     // nome do usuario
     private String name;
     // tipo do usuario
@@ -27,13 +29,20 @@ public abstract class User {
     protected long suspendeddDate;
 
 
-    public User(String name, String type) {
+    public User(String name, String type, int ID) {
         this.name = name;
         this.type = type;
         this.bookCounter = 0;
         this.isSuspended = false;
+        setID(ID);
     }
-    // set e get para o nome e o tipo do usuario
+    // set e get para o nome e o tipo  e o IDdo usuario
+    public int getID() {
+        return this.ID;
+    }
+    public void setID(int ID) {
+        this.ID = ID;
+    }
     public String getName() {
         return this.name;
     }

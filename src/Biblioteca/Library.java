@@ -27,10 +27,13 @@ public class Library extends Application{
     protected static List<User> Users = new ArrayList<>();
     // Arraylist de livros cadastrados
     protected static List<Book> Books = new ArrayList<>();
-
-
+    // Quantidade de usuarios
+    protected static int usersNumber;
+    // Quantidade de livros
+    protected static int booksNumber;
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         // Cria um gridPane para as opções
         GridPane controlPanel = new GridPane();
         controlPanel.setHgap(0);
@@ -88,41 +91,19 @@ public class Library extends Application{
 
                     // Checa qual o tipo do usuario digitado
                     if(Objects.equals(typeToken, "aluno")) {
-                        // Filtra todos os nomes iguais ao digitado
-                        List<User>stringArray = Users.stream()
-                                .filter(user -> Objects.equals(user.getName(), userToken))
-                                .collect(Collectors.toList());
-                        // Se ja existir aquele nome, avisa que ja existe e retorna. Dois nomes iguais nao sao suportados
-                        if(!stringArray.isEmpty()) {
-                            l.setText("Nome ja existe");
-                            return;
-                        }
-                        // Se nao, adiciona um novo aluno com o nome e tipo
-                        Users.add(new Aluno(userToken, typeToken));
+
+                        // adiciona um novo aluno com o nome,tipo e ID
+                        Users.add(new Aluno(userToken, typeToken,usersNumber++));
                         l.setText("Aluno cadastrado com sucesso");
                     }
                     else if(Objects.equals(typeToken, "professor")) {
-                        // A mesma coisa e feita com o tipo professor e comunidade
-                        List<User>stringArray = Users.stream()
-                                .filter(user -> Objects.equals(user.getName(), userToken))
-                                .collect(Collectors.toList());
-                        if(!stringArray.isEmpty()) {
-                            l.setText("Nome ja existe");
-                            return;
-                        }
-                        Users.add(new Aluno(userToken, typeToken));
+                        // adiciona um novo professor com o nome,tipo e ID
+                        Users.add(new Aluno(userToken, typeToken,usersNumber++));
                         l.setText("Professor cadastrado com sucesso");
                     }
                     else if(Objects.equals(typeToken, "comunidade")) {
-
-                        List<User>stringArray = Users.stream()
-                                .filter(user -> Objects.equals(user.getName(), userToken))
-                                .collect(Collectors.toList());
-                        if(!stringArray.isEmpty()) {
-                            l.setText("Nome ja existe");
-                            return;
-                        }
-                        Users.add(new Aluno(userToken, typeToken));
+                        // adiciona um novo comunidade com o nome,tipo e ID
+                        Users.add(new Aluno(userToken, typeToken,usersNumber++));
                         l.setText("COmunidade cadastrado com sucesso");
                     }
                 });
@@ -148,29 +129,13 @@ public class Library extends Application{
                     // Checa o tipo de livro digitado
                     // Se for texto,
                     if(Objects.equals(typeToken, "texto")) {
-                        List<Book>stringArray = Books.stream()
-                                .filter(book -> Objects.equals(book.getName(), bookToken))
-                                .collect(Collectors.toList());
-                        // Checa se ja existe algum livro com o mesmo nome.
-                        if(!stringArray.isEmpty()) {
-                            // Se sim, retorna
-                            l.setText("Livro ja existe");
-                            return;
-                        }
-                        // Se nao, adiciona um novo livro aos livros cadastrados
-                        Books.add(new TextBook(bookToken,typeToken));
+                        // adiciona um novo livro aos livros cadastrados
+                        Books.add(new TextBook(bookToken,typeToken,booksNumber++));
                         l.setText("Livro texto cadastrado com sucesso");
                     }
                     // O mesmo é feita para o caso do livro geral
                     else if(Objects.equals(typeToken, "geral")) {
-                        List<Book>stringArray = Books.stream()
-                                .filter(book -> Objects.equals(book.getName(), bookToken))
-                                .collect(Collectors.toList());
-                        if(!stringArray.isEmpty()) {
-                            l.setText("Livro ja existe");
-                            return;
-                        }
-                        Books.add(new GeneralBook(bookToken,typeToken));
+                        Books.add(new GeneralBook(bookToken,typeToken,booksNumber++));
                         l.setText("Livro geral cadastrado com sucesso");
                     }
                 });
@@ -179,7 +144,7 @@ public class Library extends Application{
         // Evento acionado ao se clicar para realizar um emprestimo
         buttons[2].addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
                 area.setText("");
-                l.setText("Digite o nome do usuario e do livro a ser pego emprestado separados por virgula sem espaco");
+                l.setText("Digite o ID do usuario e do livro a ser pego emprestado separados por virgula sem espaco");
 
                 typingArea.setOnAction(event -> {
 
@@ -187,29 +152,27 @@ public class Library extends Application{
                     typingArea.setText(null);
                     String[] token = line.split(",");
 
-                    String userToken = token[0].toLowerCase();
-                    String bookToken = token[1].toLowerCase();
-
-                    // Procura no vetor de usuarios pelo usuario com o nome digitado
+                    // Procura no vetor de usuarios pelo usuario com o ID digitado
                     for (User user : Users) {
-                        if (Objects.equals(user.getName(), userToken)) {
+
+                        if (user.getID() == Integer.parseInt(token[0]) ) {
                             // Se esse usuario esta suspenso, retorna
                             if (isSuspended(user)) {
                                 l.setText("Usuario esta suspenso");
                                 return;
                             }
-                            // Se o usuario foi encontrado, procura agora pelo livro com o nome digitado
+                            // Se o usuario foi encontrado, procura agora pelo livro com o ID digitado
                             for (Book book : Books) {
-                                if (Objects.equals(book.getName(), bookToken)) {
-                                    // Se o livro é texto e o usuario é comunidade, retorna
+                                if (book.getID() == Integer.parseInt(token[1])) {
+                                    // Se o livro é texto e o usuario é comunidade, retorna falta de permissao
                                     if (Objects.equals(book.getType(), "texto") && Objects.equals(user.getType(), "comunidade")) {
                                         l.setText("Usuario sem permissao para pegar esse livro");
                                         return;
-                                        // Se o livro ja foi pego, retorna
+                                        // Se o livro ja foi pego, retorna nao disponivel
                                     } else if (book.getStatus()) {
                                         l.setText("Livro nao disponivel");
                                         return;
-                                        // Se o usuario ja esta com o limite de livros completo, retorna
+                                        // Se o usuario ja esta com o limite de livros completo, retorna limite alcancado
                                     } else if (user.getTimeLimit() <= user.getBooks().size()) {
                                         l.setText("Usuario ja possui o limite de livros emprestados");
                                         return;
@@ -233,7 +196,7 @@ public class Library extends Application{
         // Evento acionado ao se clicar para realizar uma devolução
         buttons[3].addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
                 area.setText("");
-                l.setText("Digite o nome do usuario e do livro a ser devolvido separados por virgula sem espaco");
+                l.setText("Digite o ID do usuario e do livro a ser devolvido separados por virgula sem espaco");
 
                 typingArea.setOnAction(event -> {
 
@@ -241,28 +204,27 @@ public class Library extends Application{
                     typingArea.setText(null);
                     // Separa o input em nome do usuario e nome do livro
                     String[] token = line.split(",");
-                    String userToken = token[0].toLowerCase();
-                    String bookToken = token[1].toLowerCase();
+
                     // Procura na lista de usuarios pelo usuario com o nome digitado
                     for (User user : Users) {
-                        if (Objects.equals(user.getName(), userToken)) {
+
+                        if (user.getID() == Integer.parseInt(token[0])) {
                             // Procura na lista de livros pelo livro com nome digitado
                             for (Book book : Books) {
-                                if(Objects.equals(book.getName(), bookToken)) {
+                                if(book.getID() == Integer.parseInt(token[1])) {
                                     // Remove o livro da lista de livros que o usuario possui
                                     user.getBooks().remove(book);
                                     user.decCounter();
                                     book.setStatus(false);
-                                    // Salva a data da devolucao que eh a data atual do sistema em s
+                                    // Salva a data da devolucao que eh a data atual do sistema em segundos desde 1970
                                     long CurrentDate = new Date().getTime()/1000;
-                                    // Se essa data menos a data que o livro foi pego é mais que a data limite para se devolver o livro
+                                    // Se essa data menos a data que o livro foi pego é maior que a data limite para se devolver o livro
                                     if (CurrentDate - book.getBorrowedDate() > user.getTimeLimit() ) {
                                         // O usuario esta suspenso
                                         user.setSuspendedDate(CurrentDate);
                                         // Salva a quantidade de tempo de suspensao
                                         user.setSuspensionTime(CurrentDate - user.getTimeLimit());
                                         user.setStatus(true);
-
                                         l.setText("Livro devolvido com sucesso mas usuario está suspenso por: " + user.getSuspensionTime() + " s");
                                         return;
                                     }
@@ -279,26 +241,29 @@ public class Library extends Application{
         // Transforma o vetor em uma stream e o imprime
         buttons[4].addEventHandler(MouseEvent.MOUSE_CLICKED, e -> Users
                 .stream()
-                .forEach(user -> area.appendText(user.getName() + ", " + user.getType() + "\n"))
+                .forEach(user -> area.appendText(user.getID() + "," + user.getName() + ", " + user.getType() + "\n"))
         );
         // Evento acionaod ao se clicar para listar os livros
         // Transforma o vetor em uma stream e o imprime
         buttons[5].addEventHandler(MouseEvent.MOUSE_CLICKED, e -> Books
                 .stream()
-                .forEach(book -> area.appendText(book.getName() +", "+ book.getType()+"\n"))
+                .forEach(book -> area.appendText(book.getID() + "," + book.getName() +", "+ book.getType()+"\n"))
         );
         // Evento acionado ao se clicar para listar os emprestimos
         // Transforma o vetor em uma stream, filtra para os usuarios que possuem algum livro emprestado,
         // e imprime cada usuario e cada livro que ele possui
         buttons[6].addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                    area.setText("");
+                    area.setText("IDUser,UserName,IdBook,BookName\n");
                     Users
                             .stream()
                             .filter(user -> user.getBooks().size() > 0)
                             .forEach(user -> {
-                                area.appendText(user.getName());
+                                area.appendText(user.getID() + "," + user.getName());
                                 for (int i = 0; i < user.bookCounter; i++) {
-                                    area.appendText(", " + user.getBooks().get(i).getName());
+                                    area.appendText(", " + user.getBooks().get(i).getID() + ", " + user.getBooks().get(i).getName());
+                                    if(isLate(user,user.getBooks().get(i)) ) {
+                                        area.appendText("(Livro Atrasado)");
+                                    }
                                 }
                                 area.appendText("\n");
                             });
@@ -336,54 +301,64 @@ public class Library extends Application{
         try {
             // String para armazenar uma linha lida
             String line;
+
             // Lista para armazenar os livros que ja estao emprestados
             List<Book>stringArray;
             //Cria um fileReadear
             fileReader = new BufferedReader(new FileReader(fileName));
-            // Le a linha inicial que é o header
+            // Le o header de quatidades
             fileReader.readLine();
 
+            // Le as quatidades e as aloca em usuarios e livros
+            if( (line = fileReader.readLine()) != null ) {
+                String[] numbers = line.split(",");
+                usersNumber = Integer.parseInt(numbers[0]);
+                booksNumber = Integer.parseInt(numbers[1]);
+            }
+            // Le o header dos dados
+            fileReader.readLine();
             // Le o arquivo linha por linha a partir da segunda
             while ((line = fileReader.readLine()) != null) {
                 //Pega todos os pedaços da linha separados por virgula
                 String[] tokens = line.split(",");
                 // Se tiver algo pra ler
                 if (tokens.length > 0) {
-                    // token[1] eh o tipo de usuario ou livro lido
-                    switch(tokens[1]) {
+                    // token[2] eh o tipo de usuario ou livro lido
+                    switch(tokens[2]) {
                         case "aluno":
                             // Se leu aluno, adiciona um aluno ao vetor
-                            Aluno a = new Aluno(tokens[0],tokens[1]);
+                            Aluno a = new Aluno(tokens[1],tokens[2],Integer.parseInt(tokens[0]));
                             // com as devidas informacoes sobre ele
                             receiveInfo(a,tokens);
                             break;
                             // O mesmo é feito com um professor e um comunidade
                         case "professor":
-                            Professor p = new Professor(tokens[0],tokens[1]);
+                            Professor p = new Professor(tokens[1],tokens[2],Integer.parseInt(tokens[0]));
                             receiveInfo(p, tokens);
                             break;
 
                         case "comunidade":
-                            Comunidade c = new Comunidade(tokens[0],tokens[1]);
+                            Comunidade c = new Comunidade(tokens[1],tokens[2],Integer.parseInt(tokens[0]));
                             receiveInfo(c, tokens);
                             break;
                         // Se o tipo lido for texto
                         case "texto":
+
                             // Se um livro com o nome lido nao existir na lista de emprestados de algum usuario lido antes
                             stringArray = Books.stream()
-                                    .filter(book -> Objects.equals(book.getName(), tokens[0]))
+                                    .filter(book -> book.getID() == Integer.parseInt(tokens[0]))
                                     .collect(Collectors.toList());
                             // Adiciona esse livro no vetor de livros
                             if(stringArray.isEmpty()) {
-                                Books.add(new TextBook(tokens[0],tokens[1]));
+                                Books.add(new TextBook(tokens[1],tokens[2],Integer.parseInt(tokens[0])));
                             }
                             // O mesmo eh feito para o livro geral
                         case "geral":
                             stringArray = Books.stream()
-                                    .filter(book -> Objects.equals(book.getName(), tokens[0]))
+                                    .filter(book -> book.getID() == Integer.parseInt(tokens[0]))
                                     .collect(Collectors.toList());
                             if(stringArray.isEmpty()) {
-                                Books.add(new GeneralBook(tokens[0],tokens[1]));
+                                Books.add(new GeneralBook(tokens[1],tokens[2],Integer.parseInt(tokens[0])));
                             }
                     }
                 }
@@ -416,9 +391,16 @@ public class Library extends Application{
 
             fileWriter = new FileWriter(fileName);
                 // Imprime no arquivo o header de identificacao
-            fileWriter.append("nomeAluno, tipoAluno, numLivrosAlugados, nomeLivro, tipoLivro, dataEmprestimo(em s desde 1970)\n");
+            fileWriter.append("QtdUsuarios,QtdLivros\n");
+            fileWriter.append(String.valueOf(usersNumber));
+            fileWriter.append(",");
+            fileWriter.append(String.valueOf(booksNumber));
+            fileWriter.append("\n");
+            fileWriter.append("IDaluno,nomeAluno, tipoAluno, numLivrosAlugados, IDlivro, nomeLivro, tipoLivro, dataEmprestimo(em s desde 1970)\n");
             // Para cada usuario imprime todas as informacoes no arquivo de acordo com o header
             for( User user : Users ) {
+                fileWriter.append(String.valueOf(user.getID()));
+                fileWriter.append(",");
                 fileWriter.append(user.getName());
                 fileWriter.append(",");
                 fileWriter.append(user.getType());
@@ -426,6 +408,8 @@ public class Library extends Application{
                 fileWriter.append(String.valueOf(user.getBooks().size()) );
                 for(Book book : user.getBooks() ) {
 
+                    fileWriter.append(",");
+                    fileWriter.append(String.valueOf(book.getID()));
                     fileWriter.append(",");
                     fileWriter.append(book.getName());
                     fileWriter.append(",");
@@ -436,8 +420,10 @@ public class Library extends Application{
                 fileWriter.append("\n");
             }
             // Apos ter imprimido todos os usuarios, imprime todos os livros cadastrados
-            fileWriter.append("nomeLivro, tipoLivro\n");
+            fileWriter.append("IDlivro,nomeLivro, tipoLivro\n");
                 for( Book book : Books) {
+                    fileWriter.append(String.valueOf(book.getID()));
+                    fileWriter.append(",");
                     fileWriter.append(book.getName());
                     fileWriter.append(",");
                     fileWriter.append(book.getType());
@@ -466,13 +452,13 @@ public class Library extends Application{
      * @param tokens o vetor de strings lido do arquivo
      */
     public void receiveInfo(User U, String[] tokens) {
-        // token[2] representa a quantidade de livros que o usuario tem alugado
-        for(int i=0 ; i < Integer.parseInt(tokens[2]); i ++ ) {
-            // a partir dai, no arquivo, tem-se o nome do livro, o tipo e a data em ms do aluguel
-            // de cada livro. Logo, para isso ser lido num loop, é ligo token de 3i+3, 3i+4 e 3i + 5 pra
+        // token[3] representa a quantidade de livros que o usuario tem alugado
+        for(int i=0 ; i < Integer.parseInt(tokens[3]); i ++ ) {
+            // a partir dai, no arquivo, tem-se o ID do livro, o nome, o tipo e a data em ms do aluguel
+            // de cada livro. Logo, para isso ser lido num loop, é lido token de 3i+4, 3i+5, 3i+6 e 3i + 7 pra
             // cada uma dessas infnormacoes
-            Book b = new Book(tokens[((3 * i) + 3)],tokens[((3 * i) + 4)]);
-            b.setBorrowedDate(Long.parseLong(tokens[((3 * i) + 5)]));
+            Book b = new Book(tokens[((3 * i) + 5)],tokens[((3 * i) + 6)],Integer.parseInt(tokens[((3 * i) + 4)]));
+            b.setBorrowedDate(Long.parseLong(tokens[((3 * i) + 7)]));
             b.setStatus(true);
             U.getBooks().add(b);
             U.incCounter();
@@ -492,5 +478,17 @@ public class Library extends Application{
         // Recebe a data atual do sistema
         long CurrentDate = new Date().getTime()/1000;
         return CurrentDate - U.getSuspendedDate() <= U.getSuspensionTime();
+    }
+
+    /**
+     *
+     * @param U um objeto do tipo usuario
+     * @param B um objeto do tipo livro
+     * @return true se a condicao é satisfeita e false se nao é
+     */
+    public boolean isLate(User U, Book B) {
+        // Recebe a data atual do sistema
+        long CurrentDate = new Date().getTime()/1000;
+        return CurrentDate - B.getBorrowedDate() > U.getTimeLimit();
     }
 }

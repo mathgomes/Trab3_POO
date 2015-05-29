@@ -8,8 +8,8 @@ import java.util.ArrayList;
  */
 public class Aluno extends User {
 
-    public Aluno(String name, String type) {
-        super(name,type);
+    public Aluno(String name, String type,int ID) {
+        super(name,type,ID);
         livros = new ArrayList<>();
         booksLimit = 4;
         timeLimit = 15*24*60*60;
