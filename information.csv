@@ -5,6 +5,6 @@ IDaluno,nomeAluno, tipoAluno, numLivrosAlugados, IDlivro, nomeLivro, tipoLivro, 
 1,adenilso simao,professor,0
 2,jose,comunidade,1,0,alice no pais das maravilhas,geral,1433101244
 IDlivro,nomeLivro, tipoLivro
-0,alice no pais das maravilhas,geral
 1,poo for dummies,texto
 2,como manjar de poo,texto
+0,alice no pais das maravilhas,geral

@@ -19,6 +19,7 @@ Após ter executado algumas dessas funções, deve-se clicar no botão "Encerrar Pro
 Notas :
 As informações da biblioteca são salvas num arquivo "information.csv", que será criado no mesmo diretorio onde o programa for executado. Esse arquivo deve existir inicialmente pois ele sempre é lido ao se inicar o programa.
 As datas do sistema são salvas na forma da quatidade de segundos que se passaram desde o ano de 1970 ( pra facilitar as operações com as datas).
+Não é possivel digitar datas manualmente. Para testar os avisos de atraso e suspensoes, modifique a variavel "timeLimit" em cada classe de Usuario para algum valor pequeno e espere o tempo desse valor passar.
 Liste os livros e os usuarios caso queira saber o ID de cada um para um emprestimo.
 
 
