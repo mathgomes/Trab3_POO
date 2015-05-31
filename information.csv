@@ -1,10 +1,10 @@
 QtdUsuarios,QtdLivros
 3,3
 IDaluno,nomeAluno, tipoAluno, numLivrosAlugados, IDlivro, nomeLivro, tipoLivro, dataEmprestimo(em s desde 1970)
-0,a,aluno,1,0,b,texto,1432918591
-1,fsfsdfsdfds,professor,1,2,sdasdfqads,texto,1432919141
-2,ssssss,comunidade,0
+0,matheus gomes,aluno,2,1,poo for dummies,texto,1433101210,2,como manjar de poo,texto,1433101216
+1,adenilso simao,professor,0
+2,jose,comunidade,1,0,alice no pais das maravilhas,geral,1433101244
 IDlivro,nomeLivro, tipoLivro
-0,b,texto
-2,sdasdfqads,texto
-1,bbbb,geral
+0,alice no pais das maravilhas,geral
+1,poo for dummies,texto
+2,como manjar de poo,texto
