@@ -455,10 +455,10 @@ public class Library extends Application{
         // token[3] representa a quantidade de livros que o usuario tem alugado
         for(int i=0 ; i < Integer.parseInt(tokens[3]); i ++ ) {
             // a partir dai, no arquivo, tem-se o ID do livro, o nome, o tipo e a data em ms do aluguel
-            // de cada livro. Logo, para isso ser lido num loop, é lido token de 3i+4, 3i+5, 3i+6 e 3i + 7 pra
+            // de cada livro. Logo, para isso ser lido num loop, é lido token de 4i+4, 4i+5, 4i+6 e 4i + 7 pra
             // cada uma dessas infnormacoes
-            Book b = new Book(tokens[((3 * i) + 5)],tokens[((3 * i) + 6)],Integer.parseInt(tokens[((3 * i) + 4)]));
-            b.setBorrowedDate(Long.parseLong(tokens[((3 * i) + 7)]));
+            Book b = new Book(tokens[((4 * i) + 5)],tokens[((4 * i) + 6)],Integer.parseInt(tokens[((4 * i) + 4)]));
+            b.setBorrowedDate(Long.parseLong(tokens[((4 * i) + 7)]));
             b.setStatus(true);
             U.getBooks().add(b);
             U.incCounter();
