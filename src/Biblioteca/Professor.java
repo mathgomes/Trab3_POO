@@ -12,6 +12,7 @@ public class Professor extends User{
         super(name,type,ID);
         livros = new ArrayList<>();
         booksLimit = 6;
+        // 60 dias em segundos
         timeLimit = 60*24*60*60;
     }
 

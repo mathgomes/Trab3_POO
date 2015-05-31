@@ -12,6 +12,7 @@ public class Comunidade extends User{
         super(name,type,ID);
         livros = new ArrayList<>();
         booksLimit = 2;
+        // 15 dias em segundos
         timeLimit = 15*24*60*60;
     }
 }
